@@ -150,3 +150,73 @@ Click on deploy then test, then we should get a response from our model.
 ![alt](/images/awslamb6.JPG)
 
 Great our lambda function is working fine,its sending and receiving prompts and also storing it in the db. We can now proceed to the final steps and create api gateway
+
+## Step 4 Create and manage api gateway
+
+Stay with me we are almost done, head over to the aws console and search for api gateway
+
+![alt](/images/awsapi1.JPG)
+
+Click "create" then lets create another api endpoint,Select restapi and give it a name then set the api endpoint type to be regional. you should now have api
+
+![alt](/images/awsapi2.JPG)
+
+Click on create resource and give the path endpoint a resource name, lets say "/" and "chatwithcohere"
+
+![alt](/images/awsapigw4.JPG)
+
+You should now have something like this
+
+![alt](/images/awsapigw5.JPG)
+
+the next part is little tricky but follow along, we are going to do 3 things
+
+1. create the get method and point it to the lambda
+2. create a mapping for the query params
+3. deploy the api and test
+
+### A. Create "GET" method
+
+Click create method, select the method type to be "GET" and set the integration type to be lambda
+
+![alt](/images/awsapigw6.JPG)
+
+### B. Create a mapping for the query params
+
+while still in the creation of the "GET", scroll down to the Method request settings, set the following
+
+- authorization : None
+- request validator : Validate query string parameters and headers
+
+for the url query string parameters set the following
+
+- name : user_prompt
+- required: true
+
+Click create and then lets deploy the api
+
+![alt](/images/awsapigw7.JPG)
+
+### C. Deploy the api
+
+on the resource page of the api, click the deploy api button set the stage to new stage and give it a name, then deploy it
+
+![alt](/images/awsapigw8.JPG)
+
+Great, our application has been deployed and we have our end point, on the tabs on the left select stages, select the stage and view the invoke url
+
+![alt](/images/awsapi9.JPG)
+
+With that we can now test our end point here on the console. go to the test tab, input the user_prompt, which is the query string
+
+![alt](/images/awsapigw9.JPG)
+
+Congratulations are in order! With our serverless infrastructure now successfully deployed, we can communicate with our generative ai model with a serverless infrastructure
+
+In conclusion, Once the API Gateway is set up and running, you can integrate it into your application seamlessly. For instance, if you're using a FastAPI server, incorporating the API Gateway endpoint is a breeze. You simply define it as one of the endpoints your FastAPI server handles.
+
+## Clean up
+
+So far we created 3 resources api gateway,lambda and dynamodb that can be terminated go to the console page of each resource that was created, select the resource click actions > delete on the top right.
+
+🚧🚧🚧Don't forget to delete all your resources when you are done!🚧🚧🚧
